@@ -50,7 +50,7 @@ class _LoginState extends State<LoginPage> {
                   controller: _phoneController,
                   validator: (text) {
                     if (text.trim().isEmpty) {
-                      return "手机号不能为空";
+                      return "邮箱不能为空";
                     }
                     return null;
                   },
@@ -58,9 +58,9 @@ class _LoginState extends State<LoginPage> {
                     border: const UnderlineInputBorder(),
                     errorText: _loginFailedMessage,
                     filled: true,
-                    labelText: "手机号码",
+                    labelText: "邮箱账号",
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   autofocus: false,
                 ),
@@ -99,7 +99,7 @@ class _LoginState extends State<LoginPage> {
       var result = await showLoaderOverlay(
           context,
           UserAccount.of(context, rebuildOnChange: false)
-              .login(_phoneController.text, _passwordController.text));
+              .loginByEmail(_phoneController.text, _passwordController.text));
       if (!result.isError) {
         Navigator.pop(context); //login succeed
       } else {

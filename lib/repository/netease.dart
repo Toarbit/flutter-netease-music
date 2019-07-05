@@ -92,6 +92,11 @@ class NeteaseRepository {
     return await doRequest(
         "/login/cellphone", {"phone": phone, "password": password});
   }
+  ///使用邮箱登录
+  Future<Result<Map>> loginByEmail(String email, String password) async {
+    return await doRequest(
+        "/login", {"email": email, "password": password});
+  }
 
   ///刷新登陆状态
   ///返回结果：true 正常登陆状态

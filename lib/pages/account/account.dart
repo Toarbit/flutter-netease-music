@@ -25,6 +25,17 @@ class UserAccount extends Model {
     return result;
   }
 
+  Future<Result<Map>> loginByEmail(String email, String password) async {
+    final result = await neteaseRepository.loginByEmail(email, password);
+    if (result.isValue) {
+      final json = result.asValue.value;
+      neteaseLocalData[persistenceKey] = json;
+      _user = json;
+      notifyListeners();
+    }
+    return result;
+  }
+
   void logout() {
     _user = null;
     notifyListeners();
