@@ -204,15 +204,15 @@ class _DurationProgressBarState extends State<_DurationProgressBar> {
 
     Widget progressIndicator;
 
-    String durationText;
-    String positionText;
+    String offsetText;
 
     if (state.initialized) {
-      var duration = state.duration.inMilliseconds;
-      var position = isUserTracking ? trackingPosition.round() : state.position.inMilliseconds;
+      final duration = state.duration.inMilliseconds;
+      final position = isUserTracking
+          ? trackingPosition.round()
+          : state.position.inMilliseconds;
 
-      durationText = getTimeStamp(duration);
-      positionText = getTimeStamp(position);
+      offsetText = getTimeOffsetStamp(duration - position);
 
       int maxBuffering = 0;
       for (DurationRange range in state.buffered) {
@@ -266,13 +266,13 @@ class _DurationProgressBarState extends State<_DurationProgressBar> {
       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: Row(
         children: <Widget>[
-          Text(positionText ?? "00:00", style: theme.body1),
           Padding(padding: EdgeInsets.only(left: 4)),
           Expanded(
             child: progressIndicator,
           ),
-          Padding(padding: EdgeInsets.only(left: 4)),
-          Text(durationText ?? "00:00", style: theme.body1),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text(offsetText ?? "-00:00", style: theme.body1))
         ],
       ),
     );
