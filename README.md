@@ -2,26 +2,17 @@
 [![Build Status](https://travis-ci.com/boyan01/flutter-netease-music.svg?branch=master)](https://travis-ci.com/boyan01/flutter-netease-music)
 [![codecov](https://codecov.io/gh/boyan01/flutter-netease-music/branch/master/graph/badge.svg)](https://codecov.io/gh/boyan01/flutter-netease-music)
 
-仿网易云音乐。 
+Flutter网易云音乐播放器，基于[boyan01](https://github.com/boyan01/flutter-netease-music)。
+
+希望制作为一个简单、流畅且漂亮的自用音乐APP。
 
 ---
 
-**因无iOS设备，故平台化代码暂只写Android部分，欢迎PR。**
+因无iOS设备，iOS平台代码与上游同步。
 
-**For personal reasons(have not iOS devices), the platformized code will only write the Android part. PULL REQUESTS are welcome**
+## 依赖
 
-
-## How to start
-
-  1. install [Flutter](https://flutter.io/docs/get-started/install)
-  2. check flutter branch to **dev**, ([how to switch flutter channel](https://flutter.dev/docs/development/tools/sdk/upgrading#switching-flutter-channels))
-  3. run in Command Line
- ```bash
- flutter run --profile
- ```
-
-## 基本组件依赖
-
+* 网易云音乐API： [NeteaseCloudMusicApi](https://github.com/ziming1/NeteaseCloudMusicApi)
 * 页面加载：[**loader**](https://github.com/boyan01/loader)
 * Toast及应用内通知： [**overlay_support**](https://github.com/boyan01/overlay_support)
 
