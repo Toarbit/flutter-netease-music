@@ -65,7 +65,7 @@ class _PlayListDetailState extends State<PlaylistDetailPage> {
 
   Widget _buildLoading(BuildContext context) {
     return _buildPreview(
-        context, Container(height: 200, child: Center(child: Text("加载中..."))));
+        context, Container(height: 200, child: Center(child: CircularProgressIndicator(semanticsLabel: "加载中..."))));
   }
 
   @override

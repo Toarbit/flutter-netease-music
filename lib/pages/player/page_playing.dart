@@ -79,7 +79,9 @@ class _PlayingPageState extends State<PlayingPage> {
 /// pause,play,play next,play previous...
 class _ControllerBar extends StatelessWidget {
   Widget getPlayModeIcon(context, Color color) {
-    var playMode = PlayerState.of(context, aspect: PlayerStateAspect.playMode).value.playMode;
+    var playMode = PlayerState.of(context, aspect: PlayerStateAspect.playMode)
+        .value
+        .playMode;
     switch (playMode) {
       case PlayMode.single:
         return Icon(
@@ -109,7 +111,7 @@ class _ControllerBar extends StatelessWidget {
           tooltip: "暂停",
           iconSize: 40,
           icon: Icon(
-            Icons.pause_circle_outline,
+            Icons.pause,
             color: color,
           ),
           onPressed: () {
@@ -119,7 +121,7 @@ class _ControllerBar extends StatelessWidget {
           tooltip: "播放",
           iconSize: 40,
           icon: Icon(
-            Icons.play_circle_outline,
+            Icons.play_arrow,
             color: color,
           ),
           onPressed: () {
@@ -129,7 +131,8 @@ class _ControllerBar extends StatelessWidget {
         height: 56,
         width: 56,
         child: Center(
-          child: Container(height: 24, width: 24, child: CircularProgressIndicator()),
+          child: Container(
+              height: 24, width: 24, child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -167,7 +170,7 @@ class _ControllerBar extends StatelessWidget {
           IconButton(
               tooltip: "当前播放列表",
               icon: Icon(
-                Icons.menu,
+                Icons.list,
                 color: color,
               ),
               onPressed: () {
@@ -318,7 +321,8 @@ class _OperationBar extends StatelessWidget {
               }
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return CommentPage(
-                  threadId: CommentThreadId(music.id, CommentType.song, payload: CommentThreadPayload.music(music)),
+                  threadId: CommentThreadId(music.id, CommentType.song,
+                      payload: CommentThreadPayload.music(music)),
                 );
               }));
             }),
@@ -351,8 +355,10 @@ class _CenterSectionState extends State<_CenterSection> {
   Widget build(BuildContext context) {
     return Expanded(
       child: AnimatedCrossFade(
-        crossFadeState: _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey) {
+        crossFadeState:
+            _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild,
+            Key bottomChildKey) {
           return Stack(
             overflow: Overflow.visible,
             children: <Widget>[
@@ -394,7 +400,8 @@ class _CloudLyric extends StatefulWidget {
 
   final Music music;
 
-  const _CloudLyric({Key key, this.onTap, @required this.music}) : super(key: key);
+  const _CloudLyric({Key key, this.onTap, @required this.music})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CloudLyricState();
@@ -423,7 +430,10 @@ class _CloudLyricState extends State<_CloudLyric> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.body1.copyWith(height: 1.5, fontSize: 16, color: Colors.white);
+    TextStyle style = Theme.of(context)
+        .textTheme
+        .body1
+        .copyWith(height: 1.5, fontSize: 16, color: Colors.white);
     final playingLyric = PlayingLyric.of(context);
 
     if (playingLyric.hasLyric) {
@@ -432,7 +442,8 @@ class _CloudLyricState extends State<_CloudLyric> {
         //歌词顶部与尾部半透明显示
         return ShaderMask(
           shaderCallback: (rect) {
-            return ui.Gradient.linear(Offset(rect.width / 2, 0), Offset(rect.width / 2, constraints.maxHeight), [
+            return ui.Gradient.linear(Offset(rect.width / 2, 0),
+                Offset(rect.width / 2, constraints.maxHeight), [
               const Color(0x00FFFFFF),
               style.color,
               style.color,
@@ -452,8 +463,15 @@ class _CloudLyricState extends State<_CloudLyric> {
               highlight: style.color,
               position: position,
               onTap: widget.onTap,
-              size: Size(constraints.maxWidth, constraints.maxHeight == double.infinity ? 0 : constraints.maxHeight),
-              playing: PlayerState.of(context, aspect: PlayerStateAspect.playbackState).value.isPlaying,
+              size: Size(
+                  constraints.maxWidth,
+                  constraints.maxHeight == double.infinity
+                      ? 0
+                      : constraints.maxHeight),
+              playing: PlayerState.of(context,
+                      aspect: PlayerStateAspect.playbackState)
+                  .value
+                  .isPlaying,
             ),
           ),
         );
@@ -541,7 +559,10 @@ class _PlayingTitle extends StatelessWidget {
                   constraints: BoxConstraints(maxWidth: 200),
                   child: Text(
                     music.artist.map((a) => a.name).join('/'),
-                    style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 13),
+                    style: Theme.of(context)
+                        .primaryTextTheme
+                        .body1
+                        .copyWith(fontSize: 13),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

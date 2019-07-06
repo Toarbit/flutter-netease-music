@@ -131,7 +131,7 @@ class BottomControllerBar extends StatelessWidget {
               _PauseButton(),
               IconButton(
                   tooltip: "当前播放列表",
-                  icon: Icon(Icons.menu),
+                  icon: Icon(Icons.list),
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,

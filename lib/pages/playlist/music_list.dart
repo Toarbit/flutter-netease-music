@@ -240,7 +240,7 @@ class MusicListHeader extends StatelessWidget implements PreferredSizeWidget {
                   style: Theme.of(context).textTheme.caption,
                 ),
                 Spacer(),
-                tail,
+                Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: tail)
               ]..removeWhere((v) => v == null),
             ),
           ),

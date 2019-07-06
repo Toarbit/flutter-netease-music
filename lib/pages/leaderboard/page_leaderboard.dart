@@ -102,7 +102,7 @@ class _ItemLeaderBoard2 extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(6),
                 child: Stack(
                   children: <Widget>[
                     Image(image: CachedImage(row["coverImgUrl"])),
@@ -168,7 +168,7 @@ class _ItemLeaderboard1 extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(6),
                 child: Stack(
                   children: <Widget>[
                     Image(image: CachedImage(row["coverImgUrl"])),
