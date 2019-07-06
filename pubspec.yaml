@@ -32,6 +32,7 @@ dependencies:
   netease_music_api:
     git:
       url: git://github.com/ziming1/NeteaseCloudMusicApi.git
+  screen: ^0.0.5
 
 dev_dependencies:
   flutter_test:
