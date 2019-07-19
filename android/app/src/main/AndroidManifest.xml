@@ -15,7 +15,7 @@
     <application
         android:name=".AppContext"
         android:icon="@mipmap/ic_launcher"
-        android:label="quiet"
+        android:label="${app_name}"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="n">
