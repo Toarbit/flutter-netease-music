@@ -93,6 +93,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.core:core:1.0.2"
     implementation "androidx.media:media:1.0.1"
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation "com.google.android.exoplayer:extension-mediasession:2.9.1"
 
     //exo player
     implementation 'com.google.android.exoplayer:exoplayer-core:2.10.2'
@@ -100,7 +102,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
 
-    implementation "android.arch.lifecycle:livedata:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
