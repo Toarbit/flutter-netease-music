@@ -103,7 +103,7 @@ class _LoginState extends State<LoginPage> {
       if (!result.isError) {
         Navigator.pop(context, true); //login succeed
       } else {
-        showSimpleNotification(context, Text(result.asError.error.toString()));
+        showSimpleNotification(Text(result.asError.error.toString()));
       }
     }
   }

@@ -130,6 +130,13 @@ class BottomControllerBar extends StatelessWidget {
               ),
               _PauseButton(),
               IconButton(
+                  tooltip: "下一曲",
+                  iconSize: 20,
+                  icon: Icon(Icons.skip_next),
+                  onPressed: () {
+                    quiet.playNext();
+                  }),
+              IconButton(
                   tooltip: "当前播放列表",
                   icon: Icon(Icons.list),
                   onPressed: () {
