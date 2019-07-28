@@ -29,8 +29,7 @@ dependencies:
     path: loader/
   encrypt: ^3.2.0
   netease_music_api:
-    git:
-      url: git://github.com/ziming1/NeteaseCloudMusicApi.git
+    path: cloud_music_api/
   screen: ^0.0.5
   overlay_support: ^1.0.0
 

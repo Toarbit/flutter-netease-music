@@ -101,7 +101,7 @@ class _LoginState extends State<LoginPage> {
           UserAccount.of(context, rebuildOnChange: false)
               .loginByEmail(_phoneController.text, _passwordController.text));
       if (!result.isError) {
-        Navigator.pop(context); //login succeed
+        Navigator.pop(context, true); //login succeed
       } else {
         showSimpleNotification(context, Text(result.asError.error.toString()));
       }
