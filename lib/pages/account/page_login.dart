@@ -37,7 +37,7 @@ class _LoginState extends State<LoginPage> {
         ),
         body: Form(
           key: _formState,
-          autovalidate: true,
+          autovalidate: false,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -81,8 +81,7 @@ class _LoginState extends State<LoginPage> {
                 ),
                 RaisedButton(
                   onPressed: _onLogin,
-                  child: Text("点击登录",
-                      style: Theme.of(context).primaryTextTheme.body1),
+                  child: Text("点击登录", style: Theme.of(context).primaryTextTheme.body1),
                   color: Theme.of(context).primaryColor,
                 ),
               ],
@@ -93,13 +92,8 @@ class _LoginState extends State<LoginPage> {
 
   void _onLogin() async {
     if (_formState.currentState.validate()) {
-      bool confirm = await showConfirmDialog(context,
-          Text('即将与 http://127.0.0.1:3000 明文通信你的账号和密码\n务必确保网络环境可靠再进行登录操作！'));
-      if (confirm != true) return;
-      var result = await showLoaderOverlay(
-          context,
-          UserAccount.of(context, rebuildOnChange: false)
-              .loginByEmail(_phoneController.text, _passwordController.text));
+      var result = await showLoaderOverlay(context,
+          UserAccount.of(context, rebuildOnChange: false).loginByEmail(_phoneController.text, _passwordController.text));
       if (!result.isError) {
         Navigator.pop(context, true); //login succeed
       } else {
