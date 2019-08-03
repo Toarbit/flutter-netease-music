@@ -33,7 +33,7 @@ class UserAccount extends Model {
     final result = await neteaseRepository.loginByEmail(email, password);
     if (result.isValue) {
       final json = result.asValue.value;
-      neteaseLocalData[persistenceKey] = json;
+      neteaseLocalData[_persistenceKey] = json;
       _user = json;
       notifyListeners();
     }
