@@ -7,7 +7,7 @@ description: a music player
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.1.1+1
+version: 0.1.2+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -20,7 +20,7 @@ dependencies:
   dio: ^2.1.10
   path_provider: ^1.2.0
   shared_preferences: ^0.5.3+4
-  video_player: ^0.10.1+4
+  video_player: ^0.10.1+6
   url_launcher: ^5.1.0
   intl: ^0.15.8
   sembast: ^1.16.0
