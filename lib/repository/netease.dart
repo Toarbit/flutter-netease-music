@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:netease_music_api/netease_cloud_music.dart' as api;
 import 'package:path_provider/path_provider.dart';
-import 'package:quiet/component/utils/crypto.dart';
 import 'package:quiet/model/playlist_detail.dart';
 import 'package:quiet/pages/comments/page_comment.dart';
 import 'package:quiet/part/part.dart';
@@ -47,45 +46,41 @@ const _CODE_NEED_LOGIN = 301;
 ///map a result to any other
 Result<R> _map<T, R>(Result<T> source, R f(T t)) {
   if (source.isError) return source.asError;
-  return Result.value(f(source.asValue.value));
-}
-
-class MyCookieManager extends CookieManager {
-  MyCookieManager(CookieJar cookieJar) : super(cookieJar);
-
-  @override
-  onRequest(RequestOptions options) {
-    var cookies = cookieJar.loadForRequest(Uri.parse('http://music.163.com'));
-    cookies.removeWhere(
-        (cookie) => cookie.value == CookieManager.invalidCookieValue && cookie.expires.isBefore(DateTime.now()));
-    cookies.addAll(options.cookies);
-    String cookie = CookieManager.getCookies(cookies);
-    if (cookie.isNotEmpty) options.headers[HttpHeaders.cookieHeader] = cookie;
+  try {
+    return Result.value(f(source.asValue.value));
+  } catch (e, s) {
+    return Result.error(e, s);
   }
 }
 
 class NeteaseRepository {
   NeteaseRepository() {
-    _dio = () async {
-      String path;
+    scheduleMicrotask(() async {
+      PersistCookieJar cookieJar;
       try {
-        path = (await getApplicationDocumentsDirectory()).path;
+        final path = (await getApplicationDocumentsDirectory()).path;
+        cookieJar = PersistCookieJar(dir: path + '/.cookies/');
       } catch (e) {
-        debugPrint("error: can not get cookie directory");
-        path = '.';
+        debugPrint("error: can not create persist cookie jar");
       }
-      _cookieJar = PersistCookieJar(dir: path + '/.cookies/');
-      final dio = Dio(BaseOptions(baseUrl: 'http://localhost:3000'));
-      dio.interceptors..add(MyCookieManager(_cookieJar))
-//        ..add(LogInterceptor(requestHeader: false))
-          ;
-      return dio;
-    }();
+      _cookieJar.complete(cookieJar);
+    });
   }
 
-  Future<Dio> _dio;
+  Completer<PersistCookieJar> _cookieJar = Completer();
 
-  PersistCookieJar _cookieJar;
+  Future<List<Cookie>> _loadCookies() async {
+    final jar = await _cookieJar.future;
+    if (jar == null) return const [];
+    final uri = Uri.parse('http://music.163.com');
+    return jar.loadForRequest(uri);
+  }
+
+  void _saveCookies(List<Cookie> cookies) async {
+    final jar = await _cookieJar.future;
+    if (jar == null) return;
+    jar.saveFromResponse(Uri.parse('http://music.163.com'), cookies);
+  }
 
   ///使用手机号码登录
   Future<Result<Map>> login(String phone, String password) async {
@@ -107,9 +102,8 @@ class NeteaseRepository {
 
   ///登出,删除本地cookie信息
   Future<void> logout() async {
-    await _dio;
     //删除cookie
-    _cookieJar?.deleteAll();
+    _cookieJar.future.then((v) => v?.deleteAll());
   }
 
   ///根据用户ID获取歌单
@@ -241,6 +235,17 @@ class NeteaseRepository {
     return result.isValue && result.asValue.value["data"][0]["code"] == 200;
   }
 
+  Future<Result<String>> getPlayUrl(int id, [int br = 320000]) async {
+    final result = await doRequest("/song/url", {"id": id, "br": br});
+    return _map(result, (result) {
+      final data = result['data'] as List;
+      if (data.isEmpty) {
+        throw "无法获取播放地址";
+      }
+      return data.first['url'];
+    });
+  }
+
   ///fetch music detail from id
   Future<Result<Map<String, Object>>> getMusicDetail(int id) async {
     final result = await doRequest("https://music.163.com/weapi/v3/song/detail", {"ids": "[$id]", "c": '[{"id":$id}]'});
@@ -367,23 +372,27 @@ class NeteaseRepository {
 
   ///[path] request path
   ///[data] parameter
-  Future<Result<Map<String, dynamic>>> doRequest(String path, [Map data = const {}]) async {
+  Future<Result<Map<String, dynamic>>> doRequest(String path, [Map param = const {}]) async {
+    api.Answer result;
     try {
-      final dio = await _dio;
-      final result =
-          await dio.get<Map<String, dynamic>>(path, queryParameters: NeteaseCloudApiCrypto().encrypt(data).cast());
-      final map = result.data;
-      if (map == null) {
-        return Result.error('请求失败了');
-      } else if (map['code'] == _CODE_NEED_LOGIN) {
-        return Result.error('需要登陆才能访问哦~');
-      } else if (map['code'] != _CODE_SUCCESS) {
-        return Result.error(map['msg'] ?? '请求失败了~');
-      }
-      return Result.value(map);
-    } catch (e, stackTrace) {
-      return Result.error(e, stackTrace);
+      result = await api.cloudMusicApi(path, parameter: param, cookie: await _loadCookies());
+    } catch (e, stacktrace) {
+      debugPrint("request error : $e \n $stacktrace");
+      return Result.error(e, stacktrace);
     }
+    final map = result.body;
+
+    if (result.status == 200) {
+      _saveCookies(result.cookie);
+    }
+    if (map == null) {
+      return Result.error('请求失败了');
+    } else if (map['code'] == _CODE_NEED_LOGIN) {
+      return Result.error('需要登陆才能访问哦~');
+    } else if (map['code'] != _CODE_SUCCESS) {
+      return Result.error(map['msg'] ?? '请求失败了~');
+    }
+    return Result.value(map);
   }
 }
 
