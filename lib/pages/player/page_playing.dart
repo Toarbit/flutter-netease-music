@@ -375,7 +375,7 @@ class _CenterSectionState extends State<_CenterSection> {
               _showLyric = !_showLyric;
             });
           },
-          child: AlbumCover(music: widget.music),
+          child: StaticAlbumCover(music: widget.music),
         ),
         secondChild: _CloudLyric(
           music: widget.music,
@@ -424,12 +424,12 @@ class _CloudLyricState extends State<_CloudLyric> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.body1.copyWith(height: 1.5, fontSize: 16, color: Colors.white);
+    TextStyle style = Theme.of(context).textTheme.body1.copyWith(height: 2, fontSize: 18, color: Colors.white);
     final playingLyric = PlayingLyric.of(context);
 
     if (playingLyric.hasLyric) {
       return LayoutBuilder(builder: (context, constraints) {
-        final normalStyle = style.copyWith(color: style.color.withOpacity(0.7));
+        final normalStyle = style.copyWith(color: style.color.withOpacity(0.5));
         //歌词顶部与尾部半透明显示
         return ShaderMask(
           shaderCallback: (rect) {

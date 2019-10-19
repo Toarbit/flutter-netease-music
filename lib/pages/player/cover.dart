@@ -5,6 +5,58 @@ import 'package:quiet/component/player/player.dart';
 import 'package:quiet/model/model.dart';
 import 'package:quiet/repository/cached_image.dart';
 
+class StaticAlbumCover extends StatefulWidget {
+  final Music music;
+
+  const StaticAlbumCover({Key key, @required this.music}) : super(key: key);
+
+  @override
+  State createState() => _StaticAlbumCoverState();
+}
+
+class _StaticAlbumCoverState extends State<StaticAlbumCover> {
+  ///music change transition animation;
+  AnimationController _translateController;
+
+  ///专辑封面X偏移量
+  ///[-screenWidth/2,screenWidth/2]
+  /// 0 表示当前播放音乐封面
+  /// -screenWidth/2 - 0 表示向左滑动 |_coverTranslateX| 距离，即滑动显示后一首歌曲的封面
+  double _coverTranslateX = 0;
+
+  ///当前播放中的音乐
+  Music _current;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _current = widget.music;
+  }
+
+  @override
+  void didUpdateWidget(StaticAlbumCover oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_current == widget.music) {
+      return;
+    }
+    setState(() {
+      _current = widget.music;
+    });
+  }
+
+  static const double HEIGHT_SPACE_ALBUM_TOP = 100;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.only(
+            left: 64, right: 64, top: HEIGHT_SPACE_ALBUM_TOP),
+        child: _StaticCoverImage(_current));
+  }
+}
+
 ///播放页面歌曲封面
 class AlbumCover extends StatefulWidget {
   final Music music;
@@ -387,6 +439,33 @@ class _RotationCoverImageState extends State<_RotationCoverImage>
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StaticCoverImage extends StatelessWidget {
+  final Music music;
+  _StaticCoverImage(this.music);
+  @override
+  Widget build(BuildContext context) {
+    ImageProvider image;
+    if (music == null || music.album.coverImageUrl == null) {
+      image = AssetImage("assets/playing_page_disc.png");
+    } else {
+      image = CachedImage(music.album.coverImageUrl);
+    }
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(500),
+          child: Image(
+            image: image,
+            fit: BoxFit.cover,
           ),
         ),
       ),

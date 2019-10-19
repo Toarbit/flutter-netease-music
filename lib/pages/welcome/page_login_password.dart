@@ -34,7 +34,7 @@ class _PageLoginPasswordState extends State<PageLoginPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('手机号登录')),
+      appBar: AppBar(title: Text('邮箱登录')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -67,7 +67,7 @@ class _PageLoginPasswordState extends State<PageLoginPassword> {
       return;
     }
     final account = UserAccount.of(context, rebuildOnChange: false);
-    final result = await showLoaderOverlay(context, account.login(widget.phone, password));
+    final result = await showLoaderOverlay(context, account.loginByEmail(widget.phone, password));
     if (result.isValue) {
       //退出登录流程,表示我们登录成功了
       Navigator.of(context, rootNavigator: true).pop(true);

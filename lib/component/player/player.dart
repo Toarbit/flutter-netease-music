@@ -235,6 +235,7 @@ class _QuietState extends State<Quiet> {
       if (value.hasError) {
         showSimpleNotification(Text("播放歌曲${value.current?.title ?? ""}失败!"),
             leading: Icon(Icons.error), background: Theme.of(context).errorColor);
+        quiet.playNext();
       }
     });
   }

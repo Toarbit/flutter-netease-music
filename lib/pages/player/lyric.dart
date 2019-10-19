@@ -50,7 +50,7 @@ class LyricState extends State<Lyric>
   AnimationController _lineController;
 
   //歌词色彩渐变动画
-  AnimationController _gradientController;
+//  AnimationController _gradientController;
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class LyricState extends State<Lyric>
 
     if (widget.playing != oldWidget.playing) {
       if (!widget.playing) {
-        _gradientController?.stop();
+//        _gradientController?.stop();
         Screen.isKeptOn.then((value) {
           if (value) {
             Screen.keepOn(false);
@@ -97,7 +97,7 @@ class LyricState extends State<Lyric>
           }
         });
       } else {
-        _gradientController?.forward();
+//        _gradientController?.forward();
         Screen.isKeptOn.then((value) {
           if (!value) {
             Screen.keepOn(true);
@@ -154,18 +154,18 @@ class LyricState extends State<Lyric>
         lyricPainter.offsetScroll += offset;
       }
 
-      _gradientController?.dispose();
-      final entry = widget.lyric[line];
-      final startPercent = (milliseconds - entry.position) / entry.duration;
-      _gradientController = AnimationController(
-        vsync: this,
-        duration: Duration(
-            milliseconds: (entry.duration * (1 - startPercent)).toInt()),
-      );
-      _gradientController.addListener(() {
-        lyricPainter.lineGradientPercent = _gradientController.value;
-      });
-      _gradientController.forward(from: startPercent);
+//      _gradientController?.dispose();
+//      final entry = widget.lyric[line];
+//      final startPercent = (milliseconds - entry.position) / entry.duration;
+//      _gradientController = AnimationController(
+//        vsync: this,
+//        duration: Duration(
+//            milliseconds: (entry.duration * (1 - startPercent)).toInt()),
+//      );
+//      _gradientController.addListener(() {
+//        lyricPainter.lineGradientPercent = _gradientController.value;
+//      });
+//      _gradientController.forward(from: startPercent);
     }
     lyricPainter.currentLine = line;
   }
@@ -184,8 +184,8 @@ class LyricState extends State<Lyric>
     _flingController = null;
     _lineController?.dispose();
     _lineController = null;
-    _gradientController?.dispose();
-    _gradientController = null;
+//    _gradientController?.dispose();
+//    _gradientController = null;
     super.dispose();
   }
 
@@ -380,25 +380,26 @@ class LyricPainter extends ChangeNotifier implements CustomPainter {
 
     _highlightPainter.layout(); //layout with unbound width
 
-    double lineWidth = _highlightPainter.width;
-    double gradientWidth = _highlightPainter.width * lineGradientPercent;
-    final double lineHeight = _highlightPainter.height;
+//    double lineWidth = _highlightPainter.width;
+//    double gradientWidth = _highlightPainter.width * lineGradientPercent;
+//    final double lineHeight = _highlightPainter.height;
 
     _highlightPainter.layout(maxWidth: size.width);
 
     final highlightRegion = Path();
-    double lineDy = 0;
-    while (gradientWidth > 0) {
-      double dx = 0;
-      if (lineWidth < size.width) {
-        dx = (size.width - lineWidth) / 2;
-      }
-      highlightRegion.addRect(
-          Rect.fromLTWH(0, dy + lineDy, dx + gradientWidth, lineHeight));
-      lineWidth -= _highlightPainter.width;
-      gradientWidth -= _highlightPainter.width;
-      lineDy += lineHeight;
-    }
+    highlightRegion.addRect(Rect.fromLTWH(0, dy, (size.width - _highlightPainter.width) / 2 + _highlightPainter.width, _highlightPainter.height));
+//    double lineDy = 0;
+//    while (gradientWidth > 0) {
+//      double dx = 0;
+//      if (lineWidth < size.width) {
+//        dx = (size.width - lineWidth) / 2;
+//      }
+//      highlightRegion.addRect(
+//          Rect.fromLTWH(0, dy + lineDy, dx + gradientWidth, lineHeight));
+//      lineWidth -= _highlightPainter.width;
+//      gradientWidth -= _highlightPainter.width;
+//      lineDy += lineHeight;
+//    }
 
     canvas.save();
     canvas.clipPath(highlightRegion);
