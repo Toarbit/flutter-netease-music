@@ -433,10 +433,10 @@ class _StaticCoverImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ImageProvider image;
-    if (music == null || music.album.coverImageUrl == null) {
+    if (music == null || music.description.iconUri == null) {
       image = AssetImage("assets/playing_page_disc.png");
     } else {
-      image = CachedImage(music.album.coverImageUrl);
+      image = CachedImage(music.description.iconUri.toString());
     }
     return Container(
       padding: const EdgeInsets.all(8),
