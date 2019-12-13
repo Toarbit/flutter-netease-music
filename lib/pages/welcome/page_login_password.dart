@@ -46,7 +46,10 @@ class _PageLoginPasswordState extends State<PageLoginPassword> {
                 controller: _inputController,
                 obscureText: true,
                 keyboardType: TextInputType.url,
-                decoration: const InputDecoration(hintText: '请输入密码'),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                ),
               ),
             ),
             StretchButton(

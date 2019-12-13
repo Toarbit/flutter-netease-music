@@ -77,7 +77,6 @@ class _PhoneInput extends StatelessWidget {
         controller: controller,
         style: style,
         keyboardType: TextInputType.emailAddress,
-        obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Email',
@@ -105,23 +104,6 @@ class _ButtonNextStep extends StatelessWidget {
           toast('请输入邮箱');
           return;
         }
-//        if (text.length < 11) {
-//          toast('请输入11位手机号码');
-//          return;
-//        }
-//        final result = await showLoaderOverlay(context, WelcomeRepository.checkPhoneExist(text));
-//        if (result.isError) {
-//          toast(result.asError.error.toString());
-//        }
-//        final value = result.asValue.value;
-//        if (!value.isExist) {
-//          toast('注册流程开发未完成,欢迎贡献代码...');
-//          return;
-//        }
-//        if (!value.hasPassword) {
-//          toast('无密码登录流程的开发未完成,欢迎提出PR贡献代码...');
-//          return;
-//        }
         Navigator.pushNamed(context, pageLoginPassword, arguments: {'phone': text});
       },
     );
