@@ -187,7 +187,7 @@ class LyricState extends State<Lyric> with TickerProviderStateMixin, WidgetsBind
   void didChangeAppLifecycleState(ui.AppLifecycleState state) {
     if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.paused ||
-        state == AppLifecycleState.suspending) {
+        state == AppLifecycleState.detached) {
       Screen.isKeptOn.then((value) {
         if (value) {
           Screen.keepOn(false);

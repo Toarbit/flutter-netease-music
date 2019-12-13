@@ -181,14 +181,14 @@ class _OperationBar extends StatelessWidget {
                 LikedSongList.of(context).likeMusic(music);
               }
             }),
-        IconButton(
-            icon: Icon(
-              Icons.file_download,
-              color: iconColor,
-            ),
-            onPressed: () {
-              notImplemented(context);
-            }),
+//        IconButton(
+//            icon: Icon(
+//              Icons.file_download,
+//              color: iconColor,
+//            ),
+//            onPressed: () {
+//              notImplemented(context);
+//            }),
         IconButton(
             icon: Icon(
               Icons.comment,
@@ -204,14 +204,14 @@ class _OperationBar extends StatelessWidget {
                 );
               }));
             }),
-        IconButton(
-            icon: Icon(
-              Icons.share,
-              color: iconColor,
-            ),
-            onPressed: () {
-              notImplemented(context);
-            }),
+//        IconButton(
+//            icon: Icon(
+//              Icons.share,
+//              color: iconColor,
+//            ),
+//            onPressed: () {
+//              notImplemented(context);
+//            }),
       ],
     );
   }

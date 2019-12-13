@@ -120,7 +120,7 @@ class BottomControllerBar extends StatelessWidget {
                   iconSize: 20,
                   icon: Icon(Icons.skip_next),
                   onPressed: () {
-                    quiet.playNext();
+                    context.player.transportControls.skipToNext();
                   }),
               IconButton(
                   tooltip: "当前播放列表",
