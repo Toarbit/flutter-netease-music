@@ -26,11 +26,11 @@ class SongsResultSectionState extends State<SongsResultSection> with AutomaticKe
     return MusicList(
       musics: const [],
       onMusicTap: (context, item) async {
-        var playable = await neteaseRepository.checkMusic(item.id);
-        if (!playable) {
-          showDialog(context: context, builder: (context) => DialogNoCopyRight());
-          return;
-        }
+//        var playable = await neteaseRepository.checkMusic(item.id);
+//        if (!playable) {
+//          showDialog(context: context, builder: (context) => DialogNoCopyRight());
+//          return;
+//        }
         final song = await neteaseRepository.getMusicDetail(item.id);
         if (song.isValue) {
           final metadata = mapJsonToMusic(song.asValue.value, artistKey: "ar", albumKey: "al").metadata;
@@ -51,7 +51,7 @@ class SongsResultSectionState extends State<SongsResultSection> with AutomaticKe
           return result as Result<List>;
         },
         builder: (context, item) {
-          return MusicTile(mapJsonToMusic(item as Map));
+          return MusicListTile(mapJsonToMusic(item as Map));
         },
       ),
     );
