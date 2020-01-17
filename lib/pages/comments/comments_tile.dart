@@ -243,7 +243,7 @@ class _ItemCommentState extends State<_ItemComment> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        widget.comment.likedCount.toString(),
+                        widget.comment.likedCount.toKindCount(),
                         style: TextStyle(fontSize: 11),
                       ),
                       Padding(padding: EdgeInsets.only(left: 5)),
@@ -271,5 +271,13 @@ class _ItemCommentState extends State<_ItemComment> {
         ),
       ),
     );
+  }
+}
+
+extension KindCount on int {
+  String toKindCount() {
+    if (this < 1000) return this.toString();
+    if (this < 10000) return "${(this / 1000).toStringAsFixed(1)}K";
+    return "${(this / 1000).round()}K";
   }
 }

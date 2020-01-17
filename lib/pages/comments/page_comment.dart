@@ -23,7 +23,7 @@ class CommentPage extends StatelessWidget {
             titleSpacing: 0,
             title: ScopedModelDescendant<CommentList>(
               builder: (context, child, model) {
-                return Text(model.total == 0 ? '评论' : '评论(${model.total})');
+                return Text('评论');
               },
             ),
           ),

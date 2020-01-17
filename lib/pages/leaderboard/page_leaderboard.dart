@@ -106,38 +106,38 @@ class _ItemLeaderBoard2 extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     Image(image: CachedImage(row["coverImgUrl"])),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 24,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: const [
-                              Colors.transparent,
-                              Colors.black45
-                            ])),
-                        child: Row(
-                          children: <Widget>[
-                            Spacer(),
-                            Text(
-                              row["updateFrequency"],
-                              style: Theme.of(context).primaryTextTheme.caption,
-                            ),
-                            Padding(padding: EdgeInsets.only(right: 4))
-                          ],
-                        ),
-                      ),
-                    )
+//                    Align(
+//                      alignment: Alignment.bottomCenter,
+//                      child: Container(
+//                        height: 24,
+//                        width: double.infinity,
+//                        decoration: BoxDecoration(
+//                            gradient: LinearGradient(
+//                                begin: Alignment.topCenter,
+//                                end: Alignment.bottomCenter,
+//                                colors: const [
+//                              Colors.transparent,
+//                              Colors.black45
+//                            ])),
+//                        child: Row(
+//                          children: <Widget>[
+//                            Spacer(),
+//                            Text(
+//                              row["updateFrequency"],
+//                              style: Theme.of(context).primaryTextTheme.caption,
+//                            ),
+//                            Padding(padding: EdgeInsets.only(right: 4))
+//                          ],
+//                        ),
+//                      ),
+//                    )
                   ],
                 ),
               ),
             ),
             Text(
               row["name"],
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ],
@@ -172,58 +172,46 @@ class _ItemLeaderboard1 extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     Image(image: CachedImage(row["coverImgUrl"])),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 24,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: const [
-                              Colors.transparent,
-                              Colors.black45
-                            ])),
-                        child: Row(
-                          children: <Widget>[
-                            Spacer(),
-                            Text(
-                              row["updateFrequency"],
-                              style: Theme.of(context).primaryTextTheme.caption,
-                            ),
-                            Padding(padding: EdgeInsets.only(right: 4))
-                          ],
-                        ),
-                      ),
-                    )
+//                    Align(
+//                      alignment: Alignment.bottomCenter,
+//                      child: Container(
+//                        height: 24,
+//                        width: double.infinity,
+//                        decoration: BoxDecoration(
+//                            gradient: LinearGradient(
+//                                begin: Alignment.topCenter,
+//                                end: Alignment.bottomCenter,
+//                                colors: const [
+//                              Colors.transparent,
+//                              Colors.black45
+//                            ])),
+//                        child: Row(
+//                          children: <Widget>[
+//                            Spacer(),
+//                            Text(
+//                              row["updateFrequency"],
+//                              style: Theme.of(context).primaryTextTheme.caption,
+//                            ),
+//                            Padding(padding: EdgeInsets.only(right: 4))
+//                          ],
+//                        ),
+//                      ),
+//                    )
                   ],
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(left: 8)),
+            Padding(padding: EdgeInsets.only(left: 12)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Spacer(),
-                  Text(
-                    _getTrack((row["tracks"] as List)[0] as Map),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  _getTrackItem((row["tracks"] as List)[0] as Map, context),
                   Spacer(),
-                  Text(
-                    _getTrack((row["tracks"] as List)[1] as Map),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  _getTrackItem((row["tracks"] as List)[1] as Map, context),
                   Spacer(),
-                  Text(
-                    _getTrack((row["tracks"] as List)[2] as Map),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  _getTrackItem((row["tracks"] as List)[2] as Map, context),
                   Spacer(),
                   Divider(
                     height: 0,
@@ -239,5 +227,17 @@ class _ItemLeaderboard1 extends StatelessWidget {
 
   String _getTrack(Map map) {
     return "${map["first"]} - ${map["second"]}";
+  }
+  Widget _getTrackItem(Map map, context) {
+    return RichText(
+      text: TextSpan(
+          children: <TextSpan> [
+            TextSpan(text: map["first"], style: Theme.of(context).textTheme.subtitle),
+            TextSpan(text: " - ${map["second"]}", style: Theme.of(context).textTheme.caption)
+          ]
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }

@@ -64,9 +64,11 @@ class BottomControllerBar extends StatelessWidget {
       },
       child: Card(
         margin: const EdgeInsets.all(0),
+        elevation: 12,
         shape: const RoundedRectangleBorder(
+          side: BorderSide(width: 0.5, color: const Color(0x44666666)),
             borderRadius:
-                const BorderRadius.only(topLeft: const Radius.circular(4.0), topRight: const Radius.circular(4.0))),
+                const BorderRadius.only(topLeft: const Radius.circular(12), topRight: const Radius.circular(12))),
         child: Container(
           height: 56 + bottomPadding,
           padding: EdgeInsets.only(bottom: bottomPadding),
@@ -105,6 +107,7 @@ class BottomControllerBar extends StatelessWidget {
                       ),
                       Padding(padding: const EdgeInsets.only(top: 2)),
                       DefaultTextStyle(
+                        // TODO 考虑取消歌词显示以优化性能
                         child: ProgressTrackContainer(builder: (context) => _SubTitleOrLyric(music.subTitle)),
                         maxLines: 1,
                         style: Theme.of(context).textTheme.caption,
