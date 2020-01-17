@@ -76,46 +76,55 @@ class _Header extends StatelessWidget {
         break;
     }
     return Material(
-      elevation: 0.5,
+      elevation: 1,
       child: Container(
         height: 48,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            FlatButton.icon(
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text("共$count首", style: Theme.of(context).textTheme.subhead),
+              ),
+            ),
+            IconButton(
+                icon: Icon(icon),
+                tooltip: name,
                 onPressed: () {
                   context.transportControls.setPlayMode(playMode.next);
-                },
-                icon: Icon(icon),
-                label: Text("$name($count)")),
-            Spacer(),
-            FlatButton.icon(
-                onPressed: () async {
-                  final ids = context.playList.queue.map((m) => int.parse(m.mediaId)).toList();
-                  if (ids.isEmpty) {
-                    return;
-                  }
-                  final succeed = await PlaylistSelectorDialog.addSongs(context, ids);
-                  if (succeed == null) {
-                    return;
-                  }
-                  if (succeed) {
-                    showSimpleNotification(Text("添加到收藏成功"));
-                  } else {
-                    showSimpleNotification(Text("添加到收藏失败"),
-                        leading: Icon(Icons.error), background: Theme.of(context).errorColor);
-                  }
-                },
-                icon: Icon(Icons.add_box),
-                label: Text("收藏全部")),
+                }
+            ),
             IconButton(
-                icon: Icon(Icons.delete_outline),
+              icon: Icon(Icons.add_box),
+              tooltip: "收藏全部",
+              onPressed: () async {
+                final ids = context.playList.queue.map((m) => int.parse(m.mediaId)).toList();
+                if (ids.isEmpty) {
+                  return;
+                }
+                final succeed = await PlaylistSelectorDialog.addSongs(context, ids);
+                if (succeed == null) {
+                  return;
+                }
+                if (succeed) {
+                  showSimpleNotification(Text("添加到收藏成功"));
+                } else {
+                  showSimpleNotification(Text("添加到收藏失败"),
+                      leading: Icon(Icons.error), background: Theme.of(context).errorColor);
+                }
+              },
+            ),
+            IconButton(
+                icon: Icon(Icons.delete_outline, color: Colors.redAccent,),
+                tooltip: "清空",
                 onPressed: () async {
                   Navigator.pop(context);
                   context.player.setPlayList(PlayList.empty());
                 })
           ],
         ),
-      ),
+      )
     );
   }
 }
