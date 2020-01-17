@@ -25,10 +25,10 @@ class _PageSplashState extends State<PageSplash> {
   @override
   void initState() {
     super.initState();
-    final start = DateTime.now().millisecondsSinceEpoch;
+//    final start = DateTime.now().millisecondsSinceEpoch;
     Future.wait(widget.futures).then((data) {
-      final duration = DateTime.now().millisecondsSinceEpoch - start;
-      debugPrint("flutter initial in : $duration");
+//      final duration = DateTime.now().millisecondsSinceEpoch - start;
+//      debugPrint("flutter initial in : $duration");
       setState(() {
         _data = data;
       });
