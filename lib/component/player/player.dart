@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
@@ -6,6 +8,7 @@ import 'package:quiet/component/player/lryic.dart';
 import 'package:quiet/model/model.dart';
 import 'package:quiet/part/part.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:quiet/component/player/bottom_player_bar.dart';
 export 'package:quiet/component/player/lryic.dart';
@@ -89,27 +92,31 @@ class QuietModel extends Model {
     if (player.value.playList.queue.isNotEmpty && player.value.metadata != null) {
       return;
     }
-//    try {
-//      //load former player information from SharedPreference
-//      var preference = await SharedPreferences.getInstance();
-//      final playingMediaId = preference.getString(_PREF_KEY_PLAYING);
-//      final token = preference.getString(_PREF_KEY_TOKEN);
-//      final playingList = (json.decode(preference.get(_PREF_KEY_PLAYLIST)) as List)
-//          ?.cast<Map>()
-//          ?.map((e) => MediaMetadata.fromMap(e))
-//          ?.toList();
-//      final playMode = PlayMode.values[preference.getInt(_PREF_KEY_PLAY_MODE) ?? 0];
+    try {
+      //load former player information from SharedPreference
+      var preference = await SharedPreferences.getInstance();
+      final playingMediaId = preference.getString(_PREF_KEY_PLAYING);
+      final token = preference.getString(_PREF_KEY_TOKEN);
+      final playingList = (json.decode(preference.get(_PREF_KEY_PLAYLIST)) as List)
+          ?.cast<Map>()
+          ?.map((e) => MediaMetadata.fromMap(e))
+          ?.toList();
+      final playMode = PlayMode.values[preference.getInt(_PREF_KEY_PLAY_MODE) ?? 0];
 //      player.transportControls
 //        ..setPlayMode(playMode)
 //        ..prepareFromMediaId(playingMediaId);
-//      debugPrint("loaded : $playingMediaId");
+      player
+        ..setQueueAndId(playingList, token)
+        ..transportControls.setPlayMode(playMode)
+        ..transportControls.prepareFromMediaId(playingMediaId);
+      debugPrint("loaded : $playingMediaId");
 //      debugPrint("loaded : $playingList");
-//      debugPrint("loaded : $token");
-//      debugPrint("loaded : $playMode");
-//    } catch (e, stacktrace) {
-//      debugPrint(e.toString());
-//      debugPrint(stacktrace.toString());
-//    }
+      debugPrint("loaded : $token");
+      debugPrint("loaded : $playMode");
+    } catch (e, stacktrace) {
+      debugPrint(e.toString());
+      debugPrint(stacktrace.toString());
+    }
   });
 
   QuietModel() {
