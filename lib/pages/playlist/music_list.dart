@@ -156,6 +156,43 @@ class MusicTile extends StatelessWidget {
   }
 }
 
+
+/// song item widget
+class MusicListTile extends StatelessWidget {
+  final Music music;
+
+  MusicListTile(this.music, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final list = MusicList.of(context);
+    return Container(
+      height: 56,
+      child: InkWell(
+        onTap: () {
+          if (list.onMusicTap != null) list.onMusicTap(context, music);
+        },
+        child: _SimpleMusicListTile(music, list)
+      ),
+    );
+  }
+}
+class _SimpleMusicListTile extends StatelessWidget {
+  final Music music;
+  final MusicList musicList;
+
+  const _SimpleMusicListTile(this.music, this.musicList, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(music.title),
+      subtitle: Text(music.subTitle),
+      leading: musicList.leadingBuilder == null ? null : musicList.leadingBuilder(context, music),
+      trailing: musicList.trailingBuilder == null ? null : musicList.trailingBuilder(context, music),
+    );
+  }
+}
 class _SimpleMusicTile extends StatelessWidget {
   final Music music;
 

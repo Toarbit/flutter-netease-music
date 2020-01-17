@@ -276,6 +276,8 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
 class _HeaderAction extends StatelessWidget {
   _HeaderAction(this.icon, this.action, this.onTap);
 
+  _HeaderAction.simple(this.icon, this.onTap, {this.action});
+
   final IconData icon;
 
   final String action;
@@ -286,25 +288,14 @@ class _HeaderAction extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).primaryTextTheme;
 
-    return InkResponse(
-      onTap: onTap,
-      splashColor: textTheme.body1.color,
-      child: Opacity(
-        opacity: onTap == null ? 0.5 : 1,
-        child: Column(
-          children: <Widget>[
-            Icon(
-              icon,
-              color: textTheme.body1.color,
-            ),
-            const Padding(padding: EdgeInsets.only(top: 4)),
-            Text(
-              action,
-              style: textTheme.caption.copyWith(fontSize: 13),
-            )
-          ],
+    return IconButton(
+        icon: Icon(
+          icon,
+          color: textTheme.body1.color,
         ),
-      ),
+        tooltip: action,
+        onPressed: onTap,
+        splashColor: textTheme.body1.color
     );
   }
 }
@@ -376,9 +367,9 @@ class DetailHeader extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    _HeaderAction(Icons.comment, commentCount > 0 ? commentCount.toString() : "评论", onCommentTap),
-                    _HeaderAction(Icons.share, shareCount > 0 ? shareCount.toString() : "分享", onShareTap),
-                    _HeaderAction(Icons.file_download, '下载', null),
+                    _HeaderAction(Icons.comment, "评论", onCommentTap),
+                    _HeaderAction(Icons.share, "分享", onShareTap),
+//                    _HeaderAction(Icons.file_download, '下载', null),
                     _HeaderAction(Icons.check_box, "多选", onSelectionTap),
                   ],
                 ),
@@ -459,55 +450,54 @@ class _PlaylistDetailHeader extends StatelessWidget {
           padding: EdgeInsets.only(top: 20),
           child: Row(
             children: <Widget>[
-              SizedBox(width: 16),
+              SizedBox(width: 32),
               AspectRatio(
                 aspectRatio: 1,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(3)),
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
                   child: Stack(
                     children: <Widget>[
                       Hero(
                         tag: playlist.heroTag,
                         child: Image(fit: BoxFit.cover, image: CachedImage(playlist.coverUrl)),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-                          Colors.black54,
-                          Colors.black26,
-                          Colors.transparent,
-                          Colors.transparent,
-                        ])),
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Icon(Icons.headset, color: Theme.of(context).primaryIconTheme.color, size: 12),
-                              Text(getFormattedNumber(playlist.playCount),
-                                  style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 11))
-                            ],
-                          ),
-                        ),
-                      )
+//                      Container(
+//                        padding: EdgeInsets.all(4),
+//                        decoration: BoxDecoration(
+//                            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+//                          Colors.black54,
+//                          Colors.black26,
+//                          Colors.transparent,
+//                          Colors.transparent,
+//                        ])),
+//                        child: Align(
+//                          alignment: Alignment.topRight,
+//                          child: Row(
+//                            mainAxisSize: MainAxisSize.min,
+//                            children: <Widget>[
+//                              Icon(Icons.headset, color: Theme.of(context).primaryIconTheme.color, size: 12),
+//                              Text(getFormattedNumber(playlist.playCount),
+//                                  style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 11))
+//                            ],
+//                          ),
+//                        ),
+//                      )
                     ],
                   ),
                 ),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 24),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SizedBox(height: 10),
                     Text(
                       playlist.name,
-                      style: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 17),
+                      style: Theme.of(context).primaryTextTheme.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 10),
                     InkWell(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
