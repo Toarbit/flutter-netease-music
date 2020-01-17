@@ -17,15 +17,6 @@ class StaticAlbumCover extends StatefulWidget {
 }
 
 class _StaticAlbumCoverState extends State<StaticAlbumCover> {
-  ///music change transition animation;
-  AnimationController _translateController;
-
-  ///专辑封面X偏移量
-  ///[-screenWidth/2,screenWidth/2]
-  /// 0 表示当前播放音乐封面
-  /// -screenWidth/2 - 0 表示向左滑动 |_coverTranslateX| 距离，即滑动显示后一首歌曲的封面
-  double _coverTranslateX = 0;
-
   ///当前播放中的音乐
   Music _current;
 
@@ -47,14 +38,14 @@ class _StaticAlbumCoverState extends State<StaticAlbumCover> {
     });
   }
 
-  static const double HEIGHT_SPACE_ALBUM_TOP = 100;
+  static const double HEIGHT_SPACE_ALBUM_TOP = 8;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.transparent,
         padding: const EdgeInsets.only(
-            left: 64, right: 64, top: HEIGHT_SPACE_ALBUM_TOP),
+            left: 36, right: 36, top: HEIGHT_SPACE_ALBUM_TOP),
         child: _StaticCoverImage(_current));
   }
 }
@@ -439,17 +430,17 @@ class _StaticCoverImage extends StatelessWidget {
   Widget build(BuildContext context) {
     ImageProvider image;
     if (music == null || music.description.iconUri == null) {
-      image = AssetImage("assets/playing_page_disc.png");
+      image = AssetImage("assets/playlist_playlist.9.png");
     } else {
       image = CachedImage(music.description.iconUri.toString());
     }
     return Container(
-      padding: const EdgeInsets.all(8),
       child: AspectRatio(
         aspectRatio: 1,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(500),
-          child: Image(
+          borderRadius: BorderRadius.circular(12),
+          child: FadeInImage(
+            placeholder: AssetImage("assets/playlist_playlist.9.png"),
             image: image,
             fit: BoxFit.cover,
           ),

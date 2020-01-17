@@ -26,15 +26,15 @@ class DurationProgressBarState extends State<DurationProgressBar> {
     Widget progressIndicator;
 
     String durationText;
-    String positionText;
+//    String positionText;
 
     if (state.initialized) {
       var duration = context.playerValue.metadata.duration ?? 0;
 
       var position = isUserTracking ? trackingPosition.round() : state.positionWithOffset;
 
-      durationText = getTimeStamp(duration);
-      positionText = getTimeStamp(position);
+      durationText = getTimeOffsetStamp(duration - position);
+//      positionText = getTimeStamp(position);
 
       //TODO add buffer progress
 //      int maxBuffering = state.state.playbackState.bufferedPosition;
@@ -47,30 +47,35 @@ class DurationProgressBarState extends State<DurationProgressBar> {
 //            valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
 //            backgroundColor: Colors.white12,
 //          ),
-          Slider(
-            value: position.toDouble().clamp(0.0, duration.toDouble()),
-            min: 0.0,
-            activeColor: theme.body1.color.withOpacity(0.75),
-            inactiveColor: theme.caption.color.withOpacity(0.3),
-            max: duration.toDouble(),
-            onChangeStart: (value) {
-              setState(() {
-                isUserTracking = true;
-                trackingPosition = value;
-              });
-            },
-            onChanged: (value) {
-              setState(() {
-                trackingPosition = value;
-              });
-            },
-            onChangeEnd: (value) async {
-              isUserTracking = false;
-              context.transportControls
-                ..seekTo(value.round())
-                ..play();
-            },
-          ),
+          SliderTheme(
+            data: SliderThemeData(
+              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8)
+            ),
+            child: Slider(
+              value: position.toDouble().clamp(0.0, duration.toDouble()),
+              min: 0.0,
+              activeColor: theme.body1.color.withOpacity(0.75),
+              inactiveColor: theme.caption.color.withOpacity(0.3),
+              max: duration.toDouble(),
+              onChangeStart: (value) {
+                setState(() {
+                  isUserTracking = true;
+                  trackingPosition = value;
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  trackingPosition = value;
+                });
+              },
+              onChangeEnd: (value) async {
+                isUserTracking = false;
+                context.transportControls
+                  ..seekTo(value.round())
+                  ..play();
+              },
+            ),
+          )
         ],
       );
     } else {
@@ -79,16 +84,18 @@ class DurationProgressBarState extends State<DurationProgressBar> {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       child: Row(
         children: <Widget>[
-          Text(positionText ?? "00:00", style: theme.body1),
-          Padding(padding: EdgeInsets.only(left: 4)),
+//          Text(positionText ?? "00:00", style: theme.body1),
+//          Padding(padding: EdgeInsets.only(left: 4)),
           Expanded(
             child: progressIndicator,
           ),
-          Padding(padding: EdgeInsets.only(left: 4)),
-          Text(durationText ?? "00:00", style: theme.body1),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 12, 0),
+            child: Text(durationText ?? "00:00",
+                style: theme.body1.copyWith(fontFamily: 'monospace', fontSize: 18, color: theme.body1.color.withOpacity(0.7))))
         ],
       ),
     );

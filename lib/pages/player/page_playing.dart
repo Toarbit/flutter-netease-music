@@ -34,10 +34,8 @@ class PlayingPage extends StatelessWidget {
             color: Colors.transparent,
             child: Column(
               children: <Widget>[
-                _PlayingTitle(music: current),
+                _PlayingSimpleTitle(),
                 _CenterSection(music: current),
-                _OperationBar(),
-                const SizedBox(height: 10),
                 DurationProgressBar(),
                 _ControllerBar(),
                 SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -249,14 +247,19 @@ class _CenterSectionState extends State<_CenterSection> {
             ],
           );
         },
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 200),
         firstChild: GestureDetector(
           onTap: () {
             setState(() {
               _showLyric = !_showLyric;
             });
           },
-          child: StaticAlbumCover(music: widget.music),
+          child: Column(
+            children: <Widget>[
+              StaticAlbumCover(music: widget.music),
+              _PlayingInfo(music: widget.music),
+            ],
+          )
         ),
         secondChild: _CloudLyric(
           music: widget.music,
@@ -284,7 +287,7 @@ class _CloudLyric extends StatelessWidget {
   }
 
   Widget _buildLyric(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.body1.copyWith(height: 2, fontSize: 18, color: Colors.white);
+    TextStyle style = Theme.of(context).textTheme.body1.copyWith(height: 2, fontSize: 20, color: Colors.white);
     final playingLyric = PlayingLyric.of(context);
 
     if (playingLyric.hasLyric) {
@@ -436,5 +439,112 @@ class _PlayingTitle extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _PlayingSimpleTitle extends StatelessWidget {
+
+  const _PlayingSimpleTitle({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: true,
+      bottom: false,
+      child: AppBar(
+        elevation: 0,
+        primary: false,
+        leading: IconButton(
+            tooltip: '返回上一层',
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
+            onPressed: () => Navigator.pop(context)),
+        titleSpacing: 0,
+        backgroundColor: Colors.transparent,
+        actions: <Widget>[
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  child: ListTile(leading: Icon(Icons.file_download), title: Text("下载"))
+                ),
+                PopupMenuItem(
+                    child: ListTile(leading: Icon(Icons.comment), title: Text("评论"), onTap: () {
+                      final music = context.playerValue.current;
+                      if (music == null) {
+                        return;
+                      }
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return CommentPage(
+                          threadId: CommentThreadId(music.id, CommentType.song, payload: CommentThreadPayload.music(music)),
+                        );
+                      }));
+                    })
+                ),
+              ];
+            },
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _PlayingInfo extends StatelessWidget {
+
+  final Music music;
+
+  const _PlayingInfo({Key key, @required this.music}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final music = context.playerValue.current;
+    final liked = LikedSongList.contain(context, music);
+    final theme = Theme.of(context).primaryTextTheme;
+
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 36),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                  Text(
+                    music.title,
+                    style: theme.title.copyWith(fontSize: 28, color: theme.body1.color.withOpacity(0.85)),
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  Text(
+                    music.artist.map((a) => a.name).join('/'),
+                    style: theme.title.copyWith(color: theme.body1.color.withOpacity(0.7)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+                iconSize: 32,
+                icon: Icon(
+                  liked ? Icons.favorite : Icons.favorite_border,
+                  color: Theme.of(context).primaryIconTheme.color.withOpacity(0.7),
+                ),
+                onPressed: () {
+                  if (liked) {
+                    LikedSongList.of(context).dislikeMusic(music);
+                  } else {
+                    LikedSongList.of(context).likeMusic(music);
+                  }
+                }),
+          ],
+        ));
   }
 }
