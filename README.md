@@ -1,5 +1,5 @@
 # Quiet 
-[![Build Status](https://travis-ci.com/boyan01/flutter-netease-music.svg?branch=master)](https://travis-ci.com/boyan01/flutter-netease-music)
+[![CI](https://github.com/boyan01/flutter-netease-music/workflows/CI/badge.svg)](https://github.com/boyan01/flutter-netease-music/actions)
 [![codecov](https://codecov.io/gh/boyan01/flutter-netease-music/branch/master/graph/badge.svg)](https://codecov.io/gh/boyan01/flutter-netease-music)
 
 Flutter网易云音乐播放器，基于[boyan01](https://github.com/boyan01/flutter-netease-music)。
@@ -29,9 +29,11 @@ Flutter网易云音乐播放器，基于[boyan01](https://github.com/boyan01/flu
 * Toast及应用内通知： [**overlay_support**](https://github.com/boyan01/overlay_support)
 
 ## 交互效果
-| playing | playlist | lyric |
-|------|-----|----|
-|![playing](https://raw.githubusercontent.com/boyan01/boyan01.github.io/master/quiet/play_interaction.gif)| ![playlist](https://boyan01.github.io/quiet/interation_playlist.gif) | ![lyric](https://boyan01.github.io/quiet/lyric.gif) |
+| playing                                                      | playlist                                                     | lyric                                               |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------------------- |
+| ![playing](https://raw.githubusercontent.com/boyan01/boyan01.github.io/master/quiet/play_interaction.gif) | ![playlist](https://boyan01.github.io/quiet/interation_playlist.gif) | ![lyric](https://boyan01.github.io/quiet/lyric.gif) |
+| ![theme](https://boyan01.github.io/quiet/theme_switch.gif)   |                                                              |                                                     |
+
 
 
 ## 图片预览

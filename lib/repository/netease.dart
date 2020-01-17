@@ -458,7 +458,7 @@ Future<_LyricCache> _lyricCache() async {
 }
 
 class _LyricCache implements Cache<String> {
-  _LyricCache._(Directory dir) : provider = FileCacheProvider(dir);
+  _LyricCache._(Directory dir) : provider = FileCacheProvider(dir, maxSize: 20 * 1024 * 1024 /* 20 Mb */);
 
   final FileCacheProvider provider;
 
@@ -468,6 +468,7 @@ class _LyricCache implements Cache<String> {
     if (await file.exists()) {
       return file.readAsStringSync();
     }
+    provider.touchFile(file);
     return null;
   }
 
@@ -479,6 +480,10 @@ class _LyricCache implements Cache<String> {
     }
     file = await file.create();
     await file.writeAsString(t);
-    return await file.exists();
+    try {
+      return await file.exists();
+    } finally {
+      provider.checkSize();
+    }
   }
 }

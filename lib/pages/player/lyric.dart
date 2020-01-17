@@ -34,7 +34,7 @@ class Lyric extends StatefulWidget {
 
   final VoidCallback onTap;
 
-  ///播放器是否处于播放状态
+  /// player is playing
   final bool playing;
 
   @override
@@ -104,7 +104,7 @@ class LyricState extends State<Lyric> with TickerProviderStateMixin, WidgetsBind
     }
   }
 
-  //scroll lyric to current playing position
+  /// scroll lyric to current playing position
   void _scrollToCurrentPosition(int milliseconds, {bool animate = true}) {
     if (lyricPainter.height == -1) {
       WidgetsBinding.instance.addPostFrameCallback((d) {
@@ -120,8 +120,6 @@ class LyricState extends State<Lyric> with TickerProviderStateMixin, WidgetsBind
 
     if (lyricPainter.currentLine != line && !dragging) {
       double offset = lyricPainter.computeScrollTo(line);
-      debugPrint("find line : $line , isDragging = $dragging");
-      debugPrint("start _lineController : $offset");
 
       if (animate) {
         _lineController?.dispose();
@@ -302,6 +300,7 @@ class LyricPainter extends ChangeNotifier implements CustomPainter {
   }
 
   set offsetScroll(double value) {
+    if (height == -1) return; // do not change offset when height is not available.
     _offsetScroll = value.clamp(-height, 0.0);
     repaint();
   }
