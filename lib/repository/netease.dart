@@ -155,6 +155,11 @@ class NeteaseRepository {
     return doRequest("/personalized", {"limit": limit, "offset": offset, "total": true, "n": 1000});
   }
 
+  ///热门歌单
+  Future<Result<Map>> topPlaylist({int limit = 30}) {
+    return doRequest("/top/playlist", {"limit": limit});
+  }
+
   /// 推荐的新歌（10首）
   Future<Result<Map>> personalizedNewSong() {
     return doRequest("/personalized/newsong");
@@ -248,7 +253,7 @@ class NeteaseRepository {
 
   ///fetch music detail from id
   Future<Result<Map<String, Object>>> getMusicDetail(int id) async {
-    final result = await doRequest("https://music.163.com/weapi/v3/song/detail", {"ids": "[$id]", "c": '[{"id":$id}]'});
+    final result = await doRequest("/song/detail", {"ids": id.toString()});
 
     return _map(result, (result) {
       return result["songs"][0];

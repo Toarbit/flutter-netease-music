@@ -17,14 +17,18 @@ class CloudPageState extends State<MainCloudPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListView(
-      children: <Widget>[
-        _NavigationLine(),
-        _Header("推荐歌单", () {}),
-        _SectionPlaylist(),
-        _Header("最新音乐", () {}),
-        _SectionNewSongs(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          _NavigationLine(),
+          _Header("热门歌单", () {}),
+          _SectionTopPlaylist(),
+          _Header("推荐歌单", () {}),
+          _SectionPlaylist(),
+          _Header("最新音乐", () {}),
+          _SectionNewSongs(),
+        ],
+      ),
     );
   }
 }
@@ -33,7 +37,7 @@ class _NavigationLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
+      margin: EdgeInsets.symmetric(vertical: 32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -60,16 +64,16 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 6),
+      margin: EdgeInsets.only(top: 4, bottom: 4),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(padding: EdgeInsets.only(left: 8)),
+          Padding(padding: EdgeInsets.only(left: 12)),
           Text(
             text,
             style: Theme.of(context)
                 .textTheme
-                .subhead
+                .headline
                 .copyWith(fontWeight: FontWeight.w800),
           ),
           Icon(Icons.chevron_right),
@@ -92,30 +96,29 @@ class _ItemNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: onTap,
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Column(
-            children: <Widget>[
-              Material(
-                shape: CircleBorder(),
-                elevation: 5,
-                child: ClipOval(
+        child: Column(
+          children: <Widget>[
+            Material(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              elevation: 4,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 64,
+                    height: 64,
                     color: Theme.of(context).primaryColor,
                     child: Icon(
                       icon,
                       color: Theme.of(context).primaryIconTheme.color,
                     ),
                   ),
-                ),
               ),
-              Padding(padding: EdgeInsets.only(top: 8)),
-              Text(text),
-            ],
-          ),
-        ));
+            ),
+            Padding(padding: EdgeInsets.only(top: 8)),
+            Text(text, style: Theme.of(context).textTheme.subhead),
+          ],
+        )
+    );
   }
 
   _ItemNavigator(this.icon, this.text, this.onTap);
@@ -129,10 +132,11 @@ class _SectionPlaylist extends StatelessWidget {
       builder: (context, result) {
         List<Map> list = (result["result"] as List).cast();
         return GridView.count(
+          padding: EdgeInsets.symmetric(horizontal: 6.0),
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          crossAxisCount: 3,
-          childAspectRatio: 10 / 14,
+          crossAxisCount: 2,
+          childAspectRatio: 10 / 12,
           children: list.map<Widget>((p) {
             return _buildPlaylistItem(context, p);
           }).toList(),
@@ -170,11 +174,12 @@ class _SectionPlaylist extends StatelessWidget {
       },
       onLongPress: onLongPress,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(6)),
+//              borderRadius: BorderRadius.all(Radius.circular(6)),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: FadeInImage(
@@ -184,9 +189,89 @@ class _SectionPlaylist extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 4)),
+            Padding(padding: EdgeInsets.only(top: 8)),
             Text(
               playlist["name"],
+              style: Theme.of(context).textTheme.subtitle.copyWith(height: 0.97),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionTopPlaylist extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Loader<Map>(
+      loadTask: () => neteaseRepository.topPlaylist(limit: 6),
+      builder: (context, result) {
+        List<Map> list = (result["playlists"] as List).cast();
+        return GridView.count(
+          padding: EdgeInsets.symmetric(horizontal: 6.0),
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          childAspectRatio: 10 / 12,
+          children: list.map<Widget>((p) {
+            return _buildPlaylistItem(context, p);
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildPlaylistItem(BuildContext context, Map playlist) {
+    GestureLongPressCallback onLongPress;
+
+    String copyWrite = playlist["copywriter"];
+    if (copyWrite != null && copyWrite.isNotEmpty) {
+      onLongPress = () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(
+                  playlist["copywriter"],
+                  style: Theme.of(context).textTheme.body2,
+                ),
+              );
+            });
+      };
+    }
+
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return PlaylistDetailPage(
+            playlist["id"],
+          );
+        }));
+      },
+      onLongPress: onLongPress,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ClipRRect(
+//              borderRadius: BorderRadius.all(Radius.circular(6)),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: FadeInImage(
+                  placeholder: AssetImage("assets/playlist_playlist.9.png"),
+                  image: CachedImage(playlist["coverImgUrl"]),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 8)),
+            Text(
+              playlist["name"],
+              style: Theme.of(context).textTheme.subtitle.copyWith(height: 0.97),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
