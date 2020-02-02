@@ -20,7 +20,7 @@ class CloudPageState extends State<MainCloudPage>
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          _NavigationLine(),
+          _buildHomeCategoryList(),
           _Header("热门歌单", () {}),
           _SectionTopPlaylist(),
           _Header("推荐歌单", () {}),
@@ -28,6 +28,94 @@ class CloudPageState extends State<MainCloudPage>
           _Header("最新音乐", () {}),
           _SectionNewSongs(),
         ],
+      ),
+    );
+  }
+
+
+  /// 构建分类列表
+  Widget _buildHomeCategoryList() {
+    var map = {
+      '每日推荐': 'assets/icon_daily.png',
+      '歌单': 'assets/icon_playlist.png',
+      '排行榜': 'assets/icon_rank.png',
+      '电台': 'assets/icon_radio.png',
+//      '直播': 'images/icon_look.png',
+    };
+
+    var keys = map.keys.toList();
+    double width = 64;
+
+    return GridView.custom(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.only(top: 16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: keys.length,
+        childAspectRatio: 1 / 1.1,
+      ),
+      childrenDelegate: SliverChildBuilderDelegate(
+            (context, index) {
+          return GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              switch (index) {
+                case 0:
+                  Navigator.pushNamed(context, ROUTE_DAILY);
+                  break;
+                case 2:
+                  Navigator.pushNamed(context, ROUTE_LEADERBOARD);
+                  break;
+              }
+            },
+            child: Column(
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: width,
+                      height: width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(width / 2),
+                          border: Border.all(color: Colors.black12, width: 0.5),
+                          gradient: RadialGradient(
+                            colors: [Theme.of(context).primaryColor.withOpacity(0.5), Theme.of(context).primaryColor],
+                            center: Alignment(-1.7, 0),
+                            radius: 1,
+                          ),
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    Image.asset(
+                      map[keys[index]],
+                      width: width,
+                      height: width,
+                      color: Theme.of(context).primaryTextTheme.body1.color,
+                    ),
+                    Container(
+                     padding: EdgeInsets.only(top: 4),
+                      child: keys[index] == '每日推荐'
+                          ? Text(
+                        '${DateTime.now().day}',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                      )
+                          : Text(''),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text('${keys[index]}',
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+        childCount: keys.length,
       ),
     );
   }
