@@ -418,7 +418,7 @@ class _StaticCoverImage extends StatelessWidget {
   Widget build(BuildContext context) {
     ImageProvider image;
     if (music == null || music.description.iconUri == null) {
-      image = AssetImage("assets/playlist_playlist.9.png");
+      image = AssetImage("assets/placeholder_album.png");
     } else {
       image = CachedImage(music.description.iconUri.toString());
     }
@@ -428,7 +428,7 @@ class _StaticCoverImage extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: FadeInImage(
-            placeholder: AssetImage("assets/playlist_playlist.9.png"),
+            placeholder: AssetImage("assets/placeholder_album.png"),
             image: image,
             fit: BoxFit.cover,
           ),

@@ -183,7 +183,7 @@ class _SectionPlaylist extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1,
                 child: FadeInImage(
-                  placeholder: AssetImage("assets/playlist_playlist.9.png"),
+                  placeholder: AssetImage("assets/placeholder_album.png"),
                   image: CachedImage(playlist["picUrl"]),
                   fit: BoxFit.cover,
                 ),
@@ -262,7 +262,7 @@ class _SectionTopPlaylist extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1,
                 child: FadeInImage(
-                  placeholder: AssetImage("assets/playlist_playlist.9.png"),
+                  placeholder: AssetImage("assets/placeholder_album.png"),
                   image: CachedImage(playlist["coverImgUrl"]),
                   fit: BoxFit.cover,
                 ),
