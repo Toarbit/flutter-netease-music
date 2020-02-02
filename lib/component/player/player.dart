@@ -22,6 +22,8 @@ const String _PREF_KEY_PLAYLIST = "quiet_player_playlist";
 ///key which save playing list token to local preference
 const String _PREF_KEY_TOKEN = "quiet_player_token";
 
+const String _PREF_KEY_PLAYLIST_TITLE = "quiet_player_playlist_title";
+
 ///key which save playing mode to local preference
 const String _PREF_KEY_PLAY_MODE = "quiet_player_play_mode";
 
@@ -92,31 +94,32 @@ class QuietModel extends Model {
     if (player.value.playList.queue.isNotEmpty && player.value.metadata != null) {
       return;
     }
-    try {
-      //load former player information from SharedPreference
-      var preference = await SharedPreferences.getInstance();
-      final playingMediaId = preference.getString(_PREF_KEY_PLAYING);
-      final token = preference.getString(_PREF_KEY_TOKEN);
-      final playingList = (json.decode(preference.get(_PREF_KEY_PLAYLIST)) as List)
-          ?.cast<Map>()
-          ?.map((e) => MediaMetadata.fromMap(e))
-          ?.toList();
-      final playMode = PlayMode.values[preference.getInt(_PREF_KEY_PLAY_MODE) ?? 0];
-//      player.transportControls
-//        ..setPlayMode(playMode)
-//        ..prepareFromMediaId(playingMediaId);
-      player
-        ..setQueueAndId(playingList, token)
-        ..transportControls.setPlayMode(playMode)
-        ..transportControls.prepareFromMediaId(playingMediaId);
-      debugPrint("loaded : $playingMediaId");
-//      debugPrint("loaded : $playingList");
-      debugPrint("loaded : $token");
-      debugPrint("loaded : $playMode");
-    } catch (e, stacktrace) {
-      debugPrint(e.toString());
-      debugPrint(stacktrace.toString());
-    }
+//    try {
+//      //load former player information from SharedPreference
+//      var preference = await SharedPreferences.getInstance();
+//      final playingMediaId = preference.getString(_PREF_KEY_PLAYING);
+//      final token = preference.getString(_PREF_KEY_TOKEN);
+//      final title = preference.getString(_PREF_KEY_PLAYLIST_TITLE) ?? "Now Playing";
+//      final playingList = (json.decode(preference.get(_PREF_KEY_PLAYLIST)) as List)
+//          ?.cast<Map>()
+//          ?.map((e) => MediaMetadata.fromMap(e))
+//          ?.toList();
+//      final playMode = PlayMode.values[preference.getInt(_PREF_KEY_PLAY_MODE) ?? 0];
+////      player.transportControls
+////        ..setPlayMode(playMode)
+////        ..prepareFromMediaId(playingMediaId);
+//      player
+//        ..setQueueAndId(playingList, token, queueTitle: title)
+//        ..transportControls.setPlayMode(playMode)
+//        ..transportControls.prepareFromMediaId(playingMediaId);
+//      debugPrint("loaded : $playingMediaId");
+////      debugPrint("loaded : $playingList");
+//      debugPrint("loaded : $token");
+//      debugPrint("loaded : $playMode");
+//    } catch (e, stacktrace) {
+//      debugPrint(e.toString());
+//      debugPrint(stacktrace.toString());
+//    }
   });
 
   QuietModel() {
