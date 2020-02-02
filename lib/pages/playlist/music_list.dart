@@ -80,12 +80,16 @@ class MusicTileConfiguration extends StatelessWidget {
       //open playing page
       Navigator.pushNamed(context, ROUTE_PAYING);
     } else {
-      context.player.playWithList(PlayList(queue: list.queue, queueId: list.token, queueTitle: list.token),
+      context.player.playWithList(PlayList(queue: list.queue, queueId: list.token, queueTitle: list.title),
           metadata: music.metadata);
     }
   };
 
   final String token;
+
+  final String title;
+
+  final int id;
 
   final List<Music> musics;
 
@@ -112,7 +116,9 @@ class MusicTileConfiguration extends StatelessWidget {
       this.leadingBuilder,
       this.trailingBuilder,
       this.supportAlbumMenu = true,
-      this.remove})
+      this.remove,
+      this.title,
+      this.id})
       : this.queue = musics.map((e) => e.metadata).toList(),
         super(key: key);
 
@@ -165,7 +171,7 @@ class MusicListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final list = MusicList.of(context);
+    final list = MusicTileConfiguration.of(context);
     return Container(
       height: 56,
       child: InkWell(
@@ -179,7 +185,7 @@ class MusicListTile extends StatelessWidget {
 }
 class _SimpleMusicListTile extends StatelessWidget {
   final Music music;
-  final MusicList musicList;
+  final MusicTileConfiguration musicList;
 
   const _SimpleMusicListTile(this.music, this.musicList, {Key key}) : super(key: key);
 

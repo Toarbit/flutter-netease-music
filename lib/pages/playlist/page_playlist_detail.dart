@@ -9,6 +9,7 @@ import 'package:quiet/component/utils/utils.dart';
 import 'package:quiet/model/playlist_detail.dart';
 import 'package:quiet/pages/account/page_user_detail.dart';
 import 'package:quiet/pages/comments/page_comment.dart';
+import 'package:quiet/pages/playlist/playlist_description_dialog.dart';
 import 'package:quiet/part/part.dart';
 import 'package:quiet/repository/netease.dart';
 
@@ -114,6 +115,8 @@ class _PlaylistBodyState extends State<_PlaylistBody> {
   Widget build(BuildContext context) {
     return MusicTileConfiguration(
       token: "playlist_${widget.playlist.id}",
+      title: widget.playlist.name,
+      id: widget.playlist.id,
       musics: widget.musicList,
       remove: widget.playlist.creator["userId"] != UserAccount.of(context).userId
           ? null
@@ -446,7 +449,7 @@ class _PlaylistDetailHeader extends StatelessWidget {
         },
         onShareTap: () => notImplemented(context),
         content: Container(
-          height: 146,
+          height: 160,
           padding: EdgeInsets.only(top: 20),
           child: Row(
             children: <Widget>[
@@ -498,37 +501,38 @@ class _PlaylistDetailHeader extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return UserDetailPage(userId: creator['userId']);
-                        }));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: ClipOval(
-                                child: Image(image: CachedImage(creator["avatarUrl"])),
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 4)),
-                            Text(
-                              creator["nickname"],
-                              style: Theme.of(context).primaryTextTheme.body1,
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              color: Theme.of(context).primaryIconTheme.color,
-                            )
-                          ],
-                        ),
-                      ),
-                    )
+//                    InkWell(
+//                      onTap: () {
+//                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+//                          return UserDetailPage(userId: creator['userId']);
+//                        }));
+//                      },
+//                      child: Padding(
+//                        padding: const EdgeInsets.only(top: 4, bottom: 4),
+//                        child: Row(
+//                          mainAxisSize: MainAxisSize.min,
+//                          children: <Widget>[
+//                            SizedBox(
+//                              height: 24,
+//                              width: 24,
+//                              child: ClipOval(
+//                                child: Image(image: CachedImage(creator["avatarUrl"])),
+//                              ),
+//                            ),
+//                            Padding(padding: EdgeInsets.only(left: 4)),
+//                            Text(
+//                              creator["nickname"],
+//                              style: Theme.of(context).primaryTextTheme.body1,
+//                            ),
+//                            Icon(
+//                              Icons.chevron_right,
+//                              color: Theme.of(context).primaryIconTheme.color,
+//                            )
+//                          ],
+//                        ),
+//                      ),
+//                    ),
+                    _buildDescription(context)
                   ],
                 ),
               ),
@@ -536,5 +540,45 @@ class _PlaylistDetailHeader extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  /// 构建歌单简介
+  Widget _buildDescription(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showGeneralDialog(
+          context: context,
+          pageBuilder: (BuildContext buildContext, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return PlayListDescDialog(playlist);
+          },
+          barrierDismissible: true,
+          barrierLabel:
+          MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          transitionDuration: const Duration(milliseconds: 150),
+          transitionBuilder: _buildMaterialDialogTransitions,
+        );
+      },
+      child: playlist != null && playlist.description != null && playlist.description.isNotEmpty ?
+      Text(
+        playlist.description,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).primaryTextTheme.body1.copyWith(color: Theme.of(context).primaryTextTheme.body1.color.withOpacity(0.7)),
+      ) : Container(),
+    );
+  }
+  Widget _buildMaterialDialogTransitions(
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    return FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      ),
+      child: child,
+    );
   }
 }

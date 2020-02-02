@@ -26,6 +26,7 @@ class DailyPlaylistPage extends StatelessWidget {
                         .toList();
                     return MusicTileConfiguration(
                         token: 'playlist_daily_recommend',
+                        title: '每日推荐',
                         musics: list,
                         trailingBuilder: MusicTileConfiguration.defaultTrailingBuilder,
                         leadingBuilder: MusicTileConfiguration.coverLeadingBuilder,

@@ -388,6 +388,7 @@ class _SectionNewSongs extends StatelessWidget {
         return MusicTileConfiguration(
           musics: songs,
           token: 'playlist_main_newsong',
+          title: "New Songs",
           onMusicTap: MusicTileConfiguration.defaultOnTap,
           leadingBuilder: MusicTileConfiguration.indexedLeadingBuilder,
           trailingBuilder: MusicTileConfiguration.defaultTrailingBuilder,
