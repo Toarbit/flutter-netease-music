@@ -82,7 +82,20 @@ class _HeaderContent extends StatelessWidget {
     final date = DateTime.now();
     final textTheme = Theme.of(context).primaryTextTheme;
     return FlexibleDetailBar(
-      background: Container(color: Theme.of(context).primaryColor),
+//      background: PlayListHeaderBackground(imageUrl: 'assets/bg_daily.png'),
+      background: Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          Opacity(
+            opacity: 1,
+            child: Image.asset('assets/bg_daily.png'),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: Container(color: Colors.black.withOpacity(0.4)),
+          )
+        ],
+      ),
       content: DefaultTextStyle(
         maxLines: 1,
         style: textTheme.body1.copyWith(fontWeight: FontWeight.bold),
