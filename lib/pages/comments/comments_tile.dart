@@ -276,8 +276,26 @@ class _ItemCommentState extends State<_ItemComment> {
 
 extension KindCount on int {
   String toKindCount() {
-    if (this < 1000) return this.toString();
-    if (this < 10000) return "${(this / 1000).toStringAsFixed(1)}K";
-    return "${(this / 1000).round()}K";
+    return _amountConversion(this);
+  }
+
+  static const double THOUSAND = 1000.0;
+  static const double MILLION = 10000.0;
+  static const String THOUSAND_UNIT = "千";
+  static const String MILLION_UNIT = "万";
+
+  String _amountConversion(num amount) {
+    //最终返回的结果值
+    String result = amount.toString();
+    if (amount >= THOUSAND && amount < MILLION) {
+      result = '${(amount / THOUSAND).toStringAsFixed(1)}$THOUSAND_UNIT';
+    } else if (amount < MILLION * 10 && amount > MILLION) {
+      result = '${(amount / MILLION).toStringAsFixed(1)}$MILLION_UNIT';
+    } else if (amount >= MILLION * 10) {
+      result = '${amount ~/ MILLION}$MILLION_UNIT';
+    } else {
+      result = amount.toString();
+    }
+    return result;
   }
 }
