@@ -21,7 +21,9 @@ class CloudPageState extends State<MainCloudPage>
       child: Column(
         children: <Widget>[
           _buildHomeCategoryList(),
-          _Header("热门歌单", () {}),
+          _Header("热门歌单", () {
+            Navigator.of(context).pushNamed(ROUTE_TOP_PLAYLIST);
+          }),
           _SectionTopPlaylist(),
           _Header("推荐歌单", () {}),
           _SectionPlaylist(),
@@ -164,7 +166,10 @@ class _Header extends StatelessWidget {
                 .headline
                 .copyWith(fontWeight: FontWeight.w800),
           ),
-          Icon(Icons.chevron_right),
+          IconButton(
+            icon: Icon(Icons.chevron_right),
+            onPressed: onTap,
+          ),
         ],
       ),
     );

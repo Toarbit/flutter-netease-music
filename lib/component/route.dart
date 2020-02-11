@@ -5,6 +5,7 @@ import 'package:quiet/pages/main/page_main.dart';
 import 'package:quiet/pages/page_my_dj.dart';
 import 'package:quiet/pages/player/page_playing.dart';
 import 'package:quiet/pages/playlist/page_daily_playlist.dart';
+import 'package:quiet/pages/playlist/page_top_playlist.dart';
 import 'package:quiet/pages/setting/page_setting.dart';
 import 'package:quiet/pages/video/page_music_video_player.dart';
 import 'package:quiet/pages/welcome/login_sub_navigation.dart';
@@ -41,6 +42,8 @@ const ROUTE_SETTING = '/setting';
 
 const ROUTE_SETTING_THEME = '/setting/theme';
 
+const ROUTE_TOP_PLAYLIST = "/toplist";
+
 const pageWelcome = 'welcome';
 
 ///app routers
@@ -54,6 +57,7 @@ final Map<String, WidgetBuilder> routes = {
   ROUTE_MY_COLLECTION: (context) => MyCollectionPage(),
   ROUTE_SETTING: (context) => SettingPage(),
   ROUTE_SETTING_THEME: (context) => SettingThemePage(),
+  ROUTE_TOP_PLAYLIST: (context) => TopPlaylistPage(),
   pageWelcome: (context) => PageWelcome(),
 };
 

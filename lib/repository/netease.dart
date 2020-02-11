@@ -156,8 +156,8 @@ class NeteaseRepository {
   }
 
   ///热门歌单
-  Future<Result<Map>> topPlaylist({int limit = 30}) {
-    return doRequest("/top/playlist", {"limit": limit});
+  Future<Result<Map>> topPlaylist({int limit = 30, int offset = 0}) {
+    return doRequest("/top/playlist", {"limit": limit, "offset": offset});
   }
 
   /// 推荐的新歌（10首）
