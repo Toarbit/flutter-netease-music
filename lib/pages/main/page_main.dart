@@ -96,7 +96,10 @@ class _AppDrawerHeader extends StatelessWidget {
       currentAccountPicture: InkResponse(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => UserDetailPage(userId: UserAccount.of(context).userId)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      UserDetailPage(userId: UserAccount.of(context).userId)));
         },
         child: CircleAvatar(
           backgroundImage: CachedImage(profile["avatarUrl"]),
@@ -114,7 +117,8 @@ class _AppDrawerHeader extends StatelessWidget {
             ),
             tooltip: "退出登陆",
             onPressed: () async {
-              if (await showConfirmDialog(context, Text('确认退出登录吗？'), positiveLabel: '退出登录')) {
+              if (await showConfirmDialog(context, Text('确认退出登录吗？'),
+                  positiveLabel: '退出登录')) {
                 UserAccount.of(context, rebuildOnChange: false).logout();
               }
             },
@@ -132,7 +136,8 @@ class _AppDrawerHeader extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints.expand(),
         child: DefaultTextStyle(
-          style: Theme.of(context).primaryTextTheme.caption.copyWith(fontSize: 14),
+          style:
+              Theme.of(context).primaryTextTheme.caption.copyWith(fontSize: 14),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -142,7 +147,12 @@ class _AppDrawerHeader extends StatelessWidget {
                 SizedBox(height: 8),
                 FlatButton(
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Theme.of(context).primaryTextTheme.body1.color.withOpacity(0.3)),
+                        side: BorderSide(
+                            color: Theme.of(context)
+                                .primaryTextTheme
+                                .body1
+                                .color
+                                .withOpacity(0.3)),
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     onPressed: () {
