@@ -467,23 +467,30 @@ class _PlayingSimpleTitle extends StatelessWidget {
           PopupMenuButton(
             itemBuilder: (context) {
               return [
-                PopupMenuItem(
+                PopupMenuItem<String>(
+                  value: "download",
                   child: ListTile(leading: Icon(Icons.file_download), title: Text("下载"))
                 ),
-                PopupMenuItem(
-                    child: ListTile(leading: Icon(Icons.comment), title: Text("评论"), onTap: () {
-                      final music = context.playerValue.current;
-                      if (music == null) {
-                        return;
-                      }
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return CommentPage(
-                          threadId: CommentThreadId(music.id, CommentType.song, payload: CommentThreadPayload.music(music)),
-                        );
-                      }));
-                    })
+                PopupMenuItem<String>(
+                    value: "comment",
+                    child: ListTile(leading: Icon(Icons.comment), title: Text("评论"))
                 ),
               ];
+            },
+            onSelected: (String action) {
+              switch (action) {
+                case "comment":
+                  final music = context.playerValue.current;
+                  if (music == null) {
+                    return;
+                  }
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CommentPage(
+                      threadId: CommentThreadId(music.id, CommentType.song, payload: CommentThreadPayload.music(music)),
+                    );
+                  }));
+                  break;
+              }
             },
             icon: Icon(
               Icons.more_vert,
