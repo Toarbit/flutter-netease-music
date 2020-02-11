@@ -15,26 +15,21 @@ class DailyPlaylistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageNeedLogin(
       builder: (context) => Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: BoxWithBottomPlayerController(
-              Loader<Map>(
-                  loadTask: () => neteaseRepository.recommendSongs(),
-                  builder: (context, result) {
-                    final list = (result["recommend"] as List)
-                        .cast<Map>()
-                        .map(mapJsonToMusic)
-                        .toList();
-                    return MusicTileConfiguration(
-                        token: 'playlist_daily_recommend',
-                        title: '每日推荐',
-                        musics: list,
-                        trailingBuilder: MusicTileConfiguration.defaultTrailingBuilder,
-                        leadingBuilder: MusicTileConfiguration.coverLeadingBuilder,
-                        onMusicTap: MusicTileConfiguration.defaultOnTap,
-                        child: _DailyMusicList());
-                  }),
-            ),
-          ),
+        body: BoxWithBottomPlayerController(
+          Loader<Map>(
+              loadTask: () => neteaseRepository.recommendSongs(),
+              builder: (context, result) {
+                final list = (result["recommend"] as List).cast<Map>().map(mapJsonToMusic).toList();
+                return MusicTileConfiguration(
+                    token: 'playlist_daily_recommend',
+                    musics: list,
+                    trailingBuilder: MusicTileConfiguration.defaultTrailingBuilder,
+                    leadingBuilder: MusicTileConfiguration.coverLeadingBuilder,
+                    onMusicTap: MusicTileConfiguration.defaultOnTap,
+                    child: _DailyMusicList());
+              }),
+        ),
+      ),
     );
   }
 }
@@ -57,8 +52,7 @@ class _DailyMusicList extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.help_outline),
                 onPressed: () {
-                  launch("http://music.163.com/m/topic/19193112",
-                      forceWebView: true);
+                  launch("http://music.163.com/m/topic/19193112", forceWebView: true);
                 })
           ],
           flexibleSpace: _HeaderContent(),
@@ -82,7 +76,6 @@ class _HeaderContent extends StatelessWidget {
     final date = DateTime.now();
     final textTheme = Theme.of(context).primaryTextTheme;
     return FlexibleDetailBar(
-//      background: PlayListHeaderBackground(imageUrl: 'assets/bg_daily.png'),
       background: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[

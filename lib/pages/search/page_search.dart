@@ -59,8 +59,7 @@ class NeteaseSearchPageRoute<T> extends PageRoute<T> {
 class NeteaseSearchPage extends StatefulWidget {
   final Animation<double> animation;
 
-  const NeteaseSearchPage({Key key, @required this.animation})
-      : super(key: key);
+  const NeteaseSearchPage({Key key, @required this.animation}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -145,8 +144,7 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
               ),
               resizeToAvoidBottomInset: false,
               body: BoxWithBottomPlayerController(initialState
-                  ? _EmptyQuerySuggestionSection(
-                      suggestionSelectedCallback: (query) => _search(query))
+                  ? _EmptyQuerySuggestionSection(suggestionSelectedCallback: (query) => _search(query))
                   : SearchResultPage(query: _searchedQuery)),
             ),
           ),
@@ -207,9 +205,7 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
   }
 
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty ||
-        !isSoftKeyboardDisplay(MediaQuery.of(context)) ||
-        !_focusNode.hasFocus) {
+    if (query.isEmpty || !isSoftKeyboardDisplay(MediaQuery.of(context)) || !_focusNode.hasFocus) {
       return Container(height: 0, width: 0);
     }
     return SuggestionOverflow(
@@ -226,8 +222,7 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
 ///with hot query keyword from network
 ///with query history from local
 class _EmptyQuerySuggestionSection extends StatelessWidget {
-  _EmptyQuerySuggestionSection(
-      {Key key, @required this.suggestionSelectedCallback})
+  _EmptyQuerySuggestionSection({Key key, @required this.suggestionSelectedCallback})
       : assert(suggestionSelectedCallback != null),
         super(key: key);
 
